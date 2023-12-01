@@ -1,7 +1,5 @@
 #include<iostream>
-#include<string.h>
 #include<string>
-#include<sstream>
 #include<fstream>
 
 using namespace std;
@@ -17,43 +15,27 @@ int main()
     //getline(cin,input,' ')
     while(getline(inputFile,input))
     {
-        chL = 0;
-        chR = 0;
-        bool loop = true;
-        for(int i = 0; i < input.length() || i >= 0;)
+        int numL = 0;
+        int numR = 0;
+        
+        for(int i = 0; i < input.length(); ++i)
         {
-            if(loop)
-            {
-                if(input[i] >= '0' && input[i] <= '9')
-                {
-                    chL = input[i];
-                    loop = false;
-                    i = input.length() - 1;
-                    continue;
-                }
-                i++;
-            }
-            else
-            {
-                if(input[i] >= '0' && input[i] <= '9')
-                {
-                    chR = input[i];
-                    break;
-                    continue;
-                }
-                i--;
-            }
-        }
-        string temp = "";
-        temp += chL;
-        temp += chR;
-        int temp1 = 0;
 
-        stringstream t;
-        t << temp;
-        t >> temp1;
-        answ += temp1;
+            if(isdigit(input[i]))
+                if(numL == 0)
+                {
+                    numL = input[i] - 0x30;
+                    numR = input[i] - 0x30;
+                }
+                else
+                    numR = input[i] - 0x30;
+        }
+        
+        int temp = numL*10 + numR;
+        answ += temp;
     }
-    cout << answ;
+    inputFile.close();
+
+    printf("%d\n", answ);
     return answ;
 }
