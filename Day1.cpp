@@ -7,6 +7,7 @@ using namespace std;
 
 int main()
 {
+
     string input = " ";
     char chL, chR;
     int answ = 0;
