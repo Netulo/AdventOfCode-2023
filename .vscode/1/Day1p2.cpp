@@ -1,68 +1,47 @@
 #include<iostream>
-#include<string.h>
 #include<string>
 #include<sstream>
+#include<fstream>
+#include<map>
 
 using namespace std;
 
-int FunFor(string input, int start, string nums[])
-{
-    
-    for(int y = 0; y < 9; ++y)
-    {
-        if(nums[y] == input.substr(start, nums[y].length()))
-            return y+1;
-
-    }
-    return 0;
-}
-
-int FunBack(string input, int start, string nums[])
-{
-    
-    for(int y = 0; y < 9; ++y)
-    {
-        if(start < nums[y].length())
-            break;
-        if(nums[y] == input.substr(start - nums[y].length()+1, nums[y].length()))
-            return y+1;
-
-    }
-    return 0;
-}
-
 int main()
 {
-
-    string nums[9] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-    string input = " ";
+    map<string, string> nums 
+    {
+    {"one", "o1e"}, 
+    {"two", "t2o"}, 
+    {"three", "t3e"}, 
+    {"four", "f4r"}, 
+    {"five", "f5e"}, 
+    {"six", "s6x"},
+    {"seven", "s7n"}, 
+    {"eight", "e8t"},
+    {"nine", "n9e"}
+    };
+    
+    string input;
     char chL, chR;
     int answ = 0;
+    fstream inputFile ("input.txt");
 
-    //getline(cin,input,' ')
-    while(1)
+    while(getline(inputFile,input))
     {
-        getline(cin,input);
-        if(input.empty())
-            break;
             
         chL = 0;
         chR = 0;
         bool loop = true;
-        int t = 0;
+        
+        for(auto str : nums)
+            for(int i = input.length()/2; i >= 0; --i)
+                if(input.find(str.first) < input.length())
+                    input.replace(input.find(str.first), str.first.length(), str.second);
+
         for(int i = 0; i < input.length() || i >= 0;)
         {
             if(loop)
             {
-                int funForOut = FunFor(input, i, nums);
-                if(funForOut)
-                {
-                    chL = funForOut + 48;
-                    loop = false;
-                    t = i + nums[funForOut-1].length()-1;
-                    i = input.length() - 1;
-                    continue;
-                }
                 if(input[i] >= '0' && input[i] <= '9')
                 {
                     chL = input[i];
@@ -74,12 +53,6 @@ int main()
             }
             else
             {
-                int funBackOut = FunBack(input, i, nums);
-                if(funBackOut && t != i)
-                {
-                    chR = funBackOut + 48;
-                    break;
-                }
                 if(input[i] >= '0' && input[i] <= '9')
                 {
                     chR = input[i];
@@ -96,9 +69,10 @@ int main()
         stringstream tstr;
         tstr << temp;
         tstr >> temp1;
-        cout << temp1 << endl;
+        //cout << temp1 << endl;
         answ += temp1;
     }
+    inputFile.close();
     cout << answ;
     return answ;
 }

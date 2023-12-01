@@ -2,6 +2,7 @@
 #include<string.h>
 #include<string>
 #include<sstream>
+#include<fstream>
 
 using namespace std;
 
@@ -11,14 +12,11 @@ int main()
     string input = " ";
     char chL, chR;
     int answ = 0;
+    fstream inputFile ("input.txt");
 
     //getline(cin,input,' ')
-    while(1)
+    while(getline(inputFile,input))
     {
-        getline(cin,input);
-        if(input.empty())
-            break;
-            
         chL = 0;
         chR = 0;
         bool loop = true;
