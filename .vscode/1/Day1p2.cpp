@@ -52,7 +52,7 @@ int main()
     }
     inputFile.close();
     
-    printf("%d\n", answ);
+    printf("Sum of calibration values is: %d\n", answ);
     return answ;
 }
 
