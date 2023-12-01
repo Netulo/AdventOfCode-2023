@@ -58,7 +58,6 @@ int main()
                 if(funForOut)
                 {
                     chL = funForOut + 48;
-                    //input.erase(i+1);
                     loop = false;
                     t = i + nums[funForOut-1].length()-1;
                     i = input.length() - 1;
@@ -67,7 +66,6 @@ int main()
                 if(input[i] >= '0' && input[i] <= '9')
                 {
                     chL = input[i];
-                    //input.erase(i);
                     loop = false;
                     i = input.length() - 1;
                     continue;
@@ -104,3 +102,5 @@ int main()
     cout << answ;
     return answ;
 }
+
+//poprawna 54418
