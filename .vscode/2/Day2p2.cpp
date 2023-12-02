@@ -9,14 +9,13 @@ int main()
     fstream myFile("input.txt");
     string input;
     int sum = 0;
-    int gameId = 0;
 
     while(getline(myFile, input))
     {
-        gameId++;
+        
         input = input.substr(input.find(':'));
         bool isValid = true;
-        int num;
+        int num, numRed = 0, numBlue = 0, numGreen = 0;
 
         for(int i = 0; i < input.length(); ++i)
         {
@@ -32,28 +31,25 @@ int main()
             }
             else
             {
-                if(input.length()-i >= 4 && input.substr(i, 4) == "blue" && num > 14)
+                if(input.length()-i >= 4 && input.substr(i, 4) == "blue")
                 {
-                    isValid = false;
-                    break;
+                    if(numBlue == 0 || numBlue < num)
+                        numBlue = num;
                 }
-                else if(input.length()-i >= 5 && input.substr(i, 5) == "green" && num > 13)
+                else if(input.length()-i >= 5 && input.substr(i, 5) == "green")
                 {
-                    isValid = false;
-                    break;
+                    if(numGreen == 0 || numGreen < num)
+                        numGreen = num;
                 }
-                else if(input.length()-i >= 3 && input.substr(i, 3) == "red" && num > 12)
+                else if(input.length()-i >= 3 && input.substr(i, 3) == "red")
                 {
-                    isValid = false;
-                    break;
+                    if(numRed == 0 || numRed < num)
+                        numRed = num;
                 }
             }
         }
 
-        if(isValid)
-            sum += gameId;
-
-            
+        sum += numBlue*numGreen*numRed;
     }
     myFile.close();
 
