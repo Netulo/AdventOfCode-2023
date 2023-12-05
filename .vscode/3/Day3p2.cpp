@@ -22,7 +22,7 @@ int main()
     
     table.push_back(string(input.length(), '.'));
 
-
+    //Komentarz
 
     int digit = 0;
     for(int i = 1; i < table.size()-1; ++i)
