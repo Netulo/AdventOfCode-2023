@@ -95,12 +95,8 @@ int main()
     }
 
     for(int i = 0; i < gears.size(); ++i)
-    {
         if(gears[i].size()-2 == 2)
-        {
-        sum += gears[i][2]*gears[i][3];
-        }
-    }
+            sum += gears[i][2]*gears[i][3];
         
     printf("Sum is: %d", sum);
 }
