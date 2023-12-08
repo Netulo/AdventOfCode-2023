@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-    fstream myFile("test.txt");
+    fstream myFile("input.txt");
     string input;
     int sum = 0;
 
@@ -20,32 +20,25 @@ int main()
 
             input = input.substr(input.find(":") + 1);
 
-            cout << input << endl; 
             bool tableChange = true;
             int digit = 0;
 
-            for(int i = 0; i < input.length(); ++i)
+            for(int i = 0; i < input.length()+1; ++i)
             {
-                cout << -1;
-                if(isdigit(input[i]))
-                {
-                    //cout << -1;
-                    digit = digit*10 + (input[i] - 0x30);
-                }
-                else if(input[i] == '|')
+                if(input[i] == '|')
                     tableChange = false;
-                else if(digit > 0)
+                
+                if(isdigit(input[i])) 
+                    digit = digit*10 + (input[i] - 0x30);
+                
+                if(i == input.length() || !isdigit(input[i]) && digit > 0)
                 {
-                    //cout << digit;
+                    
                     if(tableChange)
-                    {
                         winingNums.push_back(digit);
-                    }
                     else
-                    {
                         givenNums.push_back(digit);
-                    }
-                    cout << "winingNumber: " << winingNums[winingNums.back()] << " givenNumber: " << givenNums[givenNums.back()] << endl;
+                    
                     digit = 0;
                 }
             }
@@ -53,10 +46,11 @@ int main()
             int points = 0;
             for(int i = 0; i < winingNums.size(); ++i)
             {
-                for(int j = 0; i < givenNums.size(); ++j)
+                for(int j = 0; j < givenNums.size(); ++j)
                 {
+                    
                     if(winingNums[i] == givenNums[j])
-                        if(!points)
+                        if(points == 0)
                             points++;
                         else
                             points *= 2;
