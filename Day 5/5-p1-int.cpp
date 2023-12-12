@@ -3,7 +3,7 @@
 #include<string>
 #include<vector>
 #include<algorithm>
-#define INT_MAX 2147483647
+#include<map>
 
 using namespace std;
 
@@ -11,19 +11,13 @@ int main()
 {
     fstream myFile("input.txt");
     string input;
-    int sum = 0;
-    int64_t farmingCategories[7][INT_MAX] = {0};
-    for(int i = 0; i < 7; ++i)
-        for(int j = 0; j < INT_MAX; ++j)
-            farmingCategories[i][j] = j;
+    map<unsigned int, unsigned int> farmingCategories;
     
-
-    vector<int64_t> seeds;
-    //vector<vector<vector<int>>> fatmingCategories;
+    vector<unsigned int> seeds;
 
     if(myFile.is_open())
     {
-        int64_t digit = 0;
+        unsigned int digit = 0;
         getline(myFile, input);
         for(int i = 0; i < input.length(); ++i)
         {
@@ -36,10 +30,7 @@ int main()
             }
         }
 
-        //  for(int x : seeds)
-        //      cout << x << endl;
-
-
+        getline(myFile, input);
         int section = -1;
         while(getline(myFile, input))
         {
@@ -48,10 +39,8 @@ int main()
                 section++;
                 continue;
             }
-            else if(input == "")
-                continue;
             
-            int64_t instructions[3] = {0};
+            vector<unsigned int> instructions;
             int size = 0;
             digit = 0;
             bool isZero = false;
@@ -65,57 +54,37 @@ int main()
                 }
                 if(i == input.length()-1 || isZero || digit > 0 && !isdigit(input[i]))
                 {
-                    instructions[size++] = digit;
+                    instructions.push_back(digit);
                     digit = 0;
                     isZero = false;
                 }
             }
 
-                // for(int x : instructions)
-                //     cout << x << " ";
-                // cout << endl;
-
             
-            for(int i = instructions[1]; i < instructions[1]+instructions[2]; ++i)
+            for(int i = 0; i < seeds.size(); ++i)
             {
-                farmingCategories[section][i] = instructions[0];
-                instructions[0]++;
+                if(seeds[i] >= instructions[1] &&)
+            }
+
+            if(input == "")
+            {
+                for(int i = 0; i < seeds.size(); ++i)
+                if(farmingCategories.find(seeds[i]) != farmingCategories.end())
+                    seeds[i] = farmingCategories[seeds[i]];
+
+                farmingCategories.clear();
+                continue;
             }
 
         }
         myFile.close();
-
-        // for(int x : seeds)
-        //     cout << x << endl;
-        
-        for(int i = 0; i < seeds.size(); ++i)
-        {
-            for(int j = 0; j < 7; ++j)
-            {
-                seeds[i] = farmingCategories[j][seeds[i]];
-                //cout << seeds[i] << endl;
-            }
-        }
-
-          for(int x : seeds)
-            cout << x << endl;
 
             cout << "Lowest location: " << *min_element(seeds.begin(), seeds.end());
     }
     else
     {
         cout << "File oppening filed";
-        return 1;
+        return 2;
     }
-
-    // for(int i = 0; i < 7; ++i)
-    // {
-    //     cout << i << endl;
-    //     for(int j = 0; j < 100; ++j)
-    //         cout << j << " " << farmingCategories[i][j] << endl;
-    //     cout << endl;
-    // }
-
-
     return 0;
 }

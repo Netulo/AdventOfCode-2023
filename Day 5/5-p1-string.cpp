@@ -3,7 +3,7 @@
 #include<string>
 #include<vector>
 #include<algorithm>
-#define INT_MAX 2147483647
+#include<map>
 
 using namespace std;
 
@@ -12,14 +12,9 @@ int main()
     fstream myFile("input.txt");
     string input;
     int sum = 0;
-    int64_t farmingCategories[7][INT_MAX] = {0};
-    for(int i = 0; i < 7; ++i)
-        for(int j = 0; j < INT_MAX; ++j)
-            farmingCategories[i][j] = j;
+    map<string, string> farmingCategories[7];
     
-
-    vector<int64_t> seeds;
-    //vector<vector<vector<int>>> fatmingCategories;
+    vector<string> seeds;
 
     if(myFile.is_open())
     {
@@ -31,7 +26,7 @@ int main()
                 digit = digit*10 + (input[i] - 0x30);
             if(i == input.length()-1 || digit > 0 && !isdigit(input[i]))
             {
-                seeds.push_back(digit);
+                seeds.push_back(to_string(digit));
                 digit = 0;
             }
         }
@@ -51,7 +46,7 @@ int main()
             else if(input == "")
                 continue;
             
-            int64_t instructions[3] = {0};
+            string instructions[3] = {"0"};
             int size = 0;
             digit = 0;
             bool isZero = false;
@@ -65,7 +60,7 @@ int main()
                 }
                 if(i == input.length()-1 || isZero || digit > 0 && !isdigit(input[i]))
                 {
-                    instructions[size++] = digit;
+                    instructions[size++] = to_string(digit);
                     digit = 0;
                     isZero = false;
                 }
@@ -76,10 +71,11 @@ int main()
                 // cout << endl;
 
             
-            for(int i = instructions[1]; i < instructions[1]+instructions[2]; ++i)
+            for(int i = 0; i < stoul(instructions[2]); ++i)
             {
-                farmingCategories[section][i] = instructions[0];
-                instructions[0]++;
+                farmingCategories[section].insert(pair<string, string>(instructions[1], instructions[0]));
+                instructions[1] = to_string(stoul(instructions[1])+1);
+                instructions[0] = to_string(stoul(instructions[0])+1);
             }
 
         }
@@ -92,29 +88,23 @@ int main()
         {
             for(int j = 0; j < 7; ++j)
             {
-                seeds[i] = farmingCategories[j][seeds[i]];
-                //cout << seeds[i] << endl;
+                if(farmingCategories[j].find(seeds[i]) != farmingCategories[j].end())
+                {
+                    seeds[i] = farmingCategories[j][seeds[i]];
+                    //cout << seeds[i] << endl;
+                }
+                //cout << seeds[i] << " " << farmingCategories[j][seeds[i]] << endl;
             }
         }
 
-          for(int x : seeds)
-            cout << x << endl;
 
             cout << "Lowest location: " << *min_element(seeds.begin(), seeds.end());
     }
     else
     {
         cout << "File oppening filed";
-        return 1;
+        return 2;
     }
-
-    // for(int i = 0; i < 7; ++i)
-    // {
-    //     cout << i << endl;
-    //     for(int j = 0; j < 100; ++j)
-    //         cout << j << " " << farmingCategories[i][j] << endl;
-    //     cout << endl;
-    // }
 
 
     return 0;
