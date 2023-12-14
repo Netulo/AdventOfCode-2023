@@ -14,13 +14,13 @@ int main()
 {
     fstream myFile("test.txt");
     string input;
-    map<unsigned long long, unsigned long long> farmingCategories;
+    map<unsigned long, unsigned long> farmingCategories;
     
-    vector<unsigned long long> seeds;
+    vector<unsigned long> seeds;
 
     if(myFile.is_open())
     {
-        unsigned long long digit = 0;
+        unsigned long digit = 0;
         getline(myFile, input);
         for(int i = 0; i < input.length(); ++i)
         {
@@ -35,7 +35,7 @@ int main()
 
         getline(myFile, input);
         int section = -1;           
-         vector<vector<unsigned long long>> instructions;
+         vector<vector<unsigned long>> instructions;
 
         while(!myFile.eof())
         {
@@ -49,7 +49,7 @@ int main()
             
             digit = 0;
             bool isZero = false;
-            vector<unsigned long long> temp;
+            vector<unsigned long> temp;
             for(int i = 0; i < input.length(); ++i)
             {
                 
@@ -76,15 +76,32 @@ int main()
 
 
             
-            for(int s = 0; s < seeds.size(); ++s)
-                
+            for(int s = 0; s < seeds.size(); s+=2)
+            {
                 for(int i = 0; i < instructions.size(); ++i)
-                        if(seeds[s] >= instructions[i][1] && seeds[s] < instructions[i][1]+instructions[i][2])
+                {
+                        if(seeds[s] >= instructions[i][1] && seeds[s]+seeds[s+1]-1 < instructions[i][1]+instructions[i][2])
                         {
-                            seeds[s] = seeds[s]-instructions[i][1]+instructions[i][0];
-                            
+                            seeds[s] = seeds[s]-instructions[i][1]+instructions[i][0]; 
                             break;
                         }
+                        if(seeds[s] >= instructions[i][1] && seeds[s]+seeds[s+1]-1 >= instructions[i][1]+instructions[i][2])
+                        {
+                            unsigned long tempLen = seeds[s+1];
+                            unsigned long tempSeed = seeds[s];
+
+                            seeds[s+1] = instructions[i][1]+instructions[i][2]-seeds[s];
+                            seeds[s] = seeds[s]-instructions[i][1]+instructions[i][0];
+
+                            //This is throwing bad_alloc
+                            seeds.push_back(tempSeed+seeds[s+1]);
+                            seeds.push_back(tempLen-seeds[s+1]);
+                            break;
+                            
+                        }
+                }
+                
+            }
             instructions.clear();
 
         }
