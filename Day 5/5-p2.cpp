@@ -13,7 +13,7 @@ using namespace std;
 int main()
 {
     fstream myFile("test.txt");
-    string input;
+    string input; 
     map<unsigned long, unsigned long> farmingCategories;
     
     vector<unsigned long> seeds;
@@ -90,12 +90,17 @@ int main()
                             unsigned long tempLen = seeds[s+1];
                             unsigned long tempSeed = seeds[s];
 
+
+
                             seeds[s+1] = instructions[i][1]+instructions[i][2]-seeds[s];
                             seeds[s] = seeds[s]-instructions[i][1]+instructions[i][0];
 
                             //This is throwing bad_alloc
-                            seeds.push_back(tempSeed+seeds[s+1]);
-                            seeds.push_back(tempLen-seeds[s+1]);
+                            cout << tempSeed+seeds[s+1] << " ";
+                            cout << tempLen-seeds[s+1] << endl;
+
+                            // seeds.push_back(tempSeed+seeds[s+1]);
+                            // seeds.push_back(tempLen-seeds[s+1]);
                             break;
                             
                         }
