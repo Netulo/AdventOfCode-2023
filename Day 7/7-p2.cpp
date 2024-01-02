@@ -45,6 +45,7 @@ int main()
     int count = 0;
     int sum = 0;
     for(auto x : hands)
+         //cout << x[0] << endl;
          sum += stoi(x[1]) * (++count);
     
 
@@ -83,11 +84,22 @@ int whatType(const string &hand)
     }
 
     int tempNum = 0;
+    pair<char, int> tempMapElem;
+
+    int jNum = 0;
+    if(temp.find('J') != temp.end())
+        jNum = temp['J'];
+
+    temp.erase('J');
     for(const auto &x : temp)
     {
         if(x.second > tempNum)
+        {
             tempNum = x.second;
+            tempMapElem = x;
+        }
     }
+            temp[tempMapElem.first] += jNum;
 
     if(temp.size() == 1) return 1;
     if(temp.size() == 2 && (temp.begin()->second == 4 || (temp.rbegin())->second == 4)) return 2;
